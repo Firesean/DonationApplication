@@ -1,0 +1,159 @@
+# Kivy Documentation -- Reference Usage
+# https://kivy.org/doc/stable/api-kivy.html
+
+# Tech With Tim Kivy Tutorials -- Main teaching
+# https://www.youtube.com/watch?v=bMHK6NDVlCM&list=PLzMcBGfZo4-kSJVMyYeOQ8CXJ3z1k7gHn
+
+# Book : Kivy - Interactive Applicaitons and Games in Python - Second Edition
+# https://www.amazon.com/Kivy-Interactive-Applications-Python-Second/dp/1785286927/ref=sr_1_3?dchild=1&keywords=kivy&qid=1597705080&sr=8-3
+
+
+
+# rbga is 0 - 255 integer
+# kivy color is 0 - 1 decimal notation
+
+# Taking html hex code and translating it through
+# https://www.hexcolortool.com/ I grab the colors as the rgba
+# doing the color value / 255 to get the decimal to translate to kivy's color values
+
+# Main Text
+# #006fb2
+# rgba(0, 111, 178, 1)
+# 0 , .44, .7, 1
+
+# Color of Copyright
+# rgb(255, 101, 80)
+# 1, .4, .31, 1
+
+ManageScreens:
+    MainScreen:
+    DonateScreen:
+
+# My Device is a OnePlus 6T
+# Viewport size is 412 x 892
+# Resolution being 1080x2340^PX
+
+#:import Window kivy.core.window.Window
+
+
+<MainScreen>:
+    on_pre_leave: root.donateVideoObj.state = "stop"
+    name : "main"
+    langSwitchObj: langSwitchObj
+    headingObj: headingObj
+    missionObj: missionObj
+    donateObj : donateObj
+    copyrightObj : copyrightObj
+    donateVideoObj : donateVideoObj
+
+    FloatLayout:
+        # OV Image - Top right underneath LangSwitch and right of heading
+        Image:
+            source: "images/OV_icon.png"
+            pos_hint : {"x": .625,"y": .72}
+            size_hint : (.35, .35)
+
+        # LangSwitch - Top right corner
+        ToggleButton:
+            id: langSwitchObj
+            font_size : .85 * self.height
+            # Switches between English and Espanol for the entire application
+            text: "EN" if langSwitchObj.state != "down" else "ES"
+            size_hint : (.1, .05)
+            # Places the toggle switch on the very top right of the screen
+            pos_hint : {"right": 1, "top": .99}
+            on_press: root.switch_lang_main()
+
+        # Heading - Top left corner minor offset
+        Label:
+            id: headingObj
+            text: "Give the Gift\nof Opportunity"
+            font_size : .05 * self.height
+            color : 0 , .44, .7, 1
+            pos : (Window.left * .005, Window.height * .85)
+            text_size: self.size
+
+        # Mission statement - Centered underneath heading
+        Label:
+            id: missionObj
+            text: """For over 65 years, Opportunity Village has been dedicated to improving the lives of individuals with disabilities and assisting them on their journey of becoming the absolute best version of themselves."""
+            font_size : .03 * self.height
+            color: 0 , .44, .7, 1
+            pos : (Window.left * .01, Window.height * .625)
+            text_size: self.size
+
+        # Donation Button - Centered underneath the Mission Statement
+        Button:
+            id: donateObj
+            size_hint : (1, .15)
+            text: "GIFT US TODAY"
+            pos_hint : {"top": .62, "left": .25}
+            background_color: 0 , .44, .7, 1
+            on_press :
+                root.manager.transition.direction = 'up'
+                root.manager.current = "donate"
+
+        # Video Production with Poster image - Centered underneath Donation Button
+        VideoPlayer:
+            id : donateVideoObj
+            pos_hint : {"y": .02}
+            size_hint : (1, .45)
+            source: "videos/because-of-your-donation.mp4"
+            state: "stop"
+            image_overlay_play : "images/video-poster.jpg"
+
+        # Copyright Info - Centered at bottom of screen
+        Label:
+            id : copyrightObj
+            # \u00A9 unicode usage for Copyright symbol
+            text: "Copyright " + u"\u00A9 " + " 2020, Opportunity Village, Inc. All rights reserved"
+            font_size : .018 * self.height
+            color: 1, .4, .31, 1
+            pos : (Window.left * .01, Window.height * .01)
+            text_size: self.size
+
+<DonateButton>:
+    canvas:
+        Color:
+            rgba: 0 , .44, .7, 1
+        RoundedRectangle:
+            group: "textStrip"
+            pos: self.pos[0], self.height * .85
+            size: self.size[0], self.size[1] * .1
+        Color:
+            rgba: 1, 1, 1, 1
+        Ellipse:
+            group: "image"
+            source: "images/10Dollar.jpg"
+            pos: self.width * .2, self.height * .825
+            size : self.height * .15, self.height * .15
+    Label:
+        id : costs
+        pos : root.width * .025 , root.height * .875
+        text_size: self.size
+        font_size : .05 * self.height
+        color : 1, 1, 1, 1
+    Label:
+        id : description
+        pos : root.width * .5 , root.height * .875
+        color : 1, 1, 1, 1
+        text_size: self.size
+        font_size : .04 * self.height
+<DonateScreen>:
+    name : "donate"
+    # Screen --> Screen Manager --> Screen by name method --> Screen Property --> Widget Property
+    on_pre_enter :
+        root.prep_screen()
+    on_enter:
+        root.canvas.ask_update()
+
+    DonateButton:
+    DonateButton:
+    DonateButton:
+    DonateButton:
+    DonateButton:
+    DonateButton:
+    DonateButton:
+
+
+
